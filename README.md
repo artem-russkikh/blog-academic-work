@@ -1,1 +1,1 @@
-# blog-study-exercise
+# Blog CMS
