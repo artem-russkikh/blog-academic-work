@@ -114,7 +114,10 @@ export default class Posts extends React.Component {
               <Grid item xs={12} sm={6} key={idx}>
                 <Card style={{ maxWidth: 450 }}>
                   <CardMedia
-                    style={{height: 300}}
+                    style={{
+                      height: 300,
+                      backgroundPosition: 'center top',
+                    }}
                     image={el.image}
                   />
                   <CardContent style={{ minHeight: 92 }}>
