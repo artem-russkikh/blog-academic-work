@@ -12,8 +12,19 @@ import PostShow from './Screens/PostShow.js'
 
 const NotFound = () => {
   return (
-    <div>
-      Not Found
+    <div style={{
+      display: 'flex',
+      flex: 1,
+      height: '100%'
+    }}>
+      <div style={{
+        display: 'flex',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <img className="responsive-img" src="https://i.imgur.com/f0yZgd2.png"/>
+      </div>
     </div>
   )
 }

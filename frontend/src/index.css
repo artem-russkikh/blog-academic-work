@@ -4,3 +4,22 @@ body {
   font-family: sans-serif;
   overflow-y: scroll;
 }
+
+html, body, #root, #root>div {
+  height: 100%;
+}
+
+#root>div>main {
+  height: calc(100% - 65px);
+}
+
+
+.responsive-img {
+  max-width: 600px;
+}
+
+@media screen and (max-width: 699px) {
+  .responsive-img {
+    max-width: 300px;
+  }  
+}
