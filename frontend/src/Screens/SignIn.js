@@ -4,7 +4,7 @@ class SignIn extends Component {
   render() {
     return (
       <div>
-        
+        Входи не бойся
       </div>
     );
   }
