@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, IndexRoute, Route, hashHistory } from 'react-router'
+import { Router, IndexRoute, Route, browserHistory } from 'react-router'
 
 import MainLayout from './Layouts/MainLayout.js'
 
@@ -20,7 +20,7 @@ const NotFound = () => {
 
 export default () => {
   return (
-    <Router history={hashHistory}>
+    <Router history={browserHistory}>
       <Route path="/" component={MainLayout}>
         <IndexRoute component={Posts}/>
         <Route path="/signup" component={SignUp}/>

@@ -6,6 +6,7 @@ import CardHeader from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import moment from 'moment';
+import {Link} from 'react-router';
 
 const data = [
   {
@@ -129,7 +130,12 @@ export default class Posts extends React.Component {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
+                    <Button
+                      size="small"
+                      color="primary"
+                      component={Link}
+                      to={`/posts/${el.id}`}
+                    >
                       Подробнее
                     </Button>
                     <Typography title={moment(el.createdAt).format('lll')} style={{marginLeft: 'auto'}}>
