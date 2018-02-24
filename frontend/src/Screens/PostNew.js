@@ -114,6 +114,7 @@ class PostNew extends Component {
                 ref={r => { this.fileInput = r ;} }
                 onChange={(e) => this.handleImage(e)}
                 style={{ display: 'none' }}
+                accept="image/*"
                 type="file"
               />
 
@@ -172,13 +173,15 @@ class PostNew extends Component {
                 />
               </Paper>
 
-              <Button color="primary" onClick={() => { this.fileInput.click() }}>
-                Прикрепить изображение
-              </Button>
+              <div>
+                <Button style={{ marginRight: 10 }} color="primary" onClick={() => { this.fileInput.click() }}>
+                  Прикрепить изображение
+                </Button>
 
-              <Button type='submit' variant="raised" color="primary">
-                Отправить
-              </Button>
+                <Button type='submit' variant="raised" color="primary">
+                  Отправить
+                </Button>
+              </div>
             </form>
           </Grid>
         </Grid>
