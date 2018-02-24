@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Typography from 'material-ui/Typography';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
-import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 import badPasswords from '../badPasswords'
 
@@ -146,16 +145,6 @@ class SignUp extends Component {
       </div>
     );
   }
-}
-
-const styles = {
-  container: {
-    maxWidth: 420,
-    paddingTop: 100,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    paddingBottom: 40,
-  },
 }
 
 export default SignUp;

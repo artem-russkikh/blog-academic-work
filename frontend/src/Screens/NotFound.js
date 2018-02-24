@@ -15,7 +15,7 @@ class NotFound extends Component {
           justifyContent: 'center',
           zIndex: -100,
         }}>
-          <img className="responsive-img" src="https://i.imgur.com/f0yZgd2.png" />
+          <img alt="" className="responsive-img" src="https://i.imgur.com/f0yZgd2.png" />
         </div>
       </div>
     )

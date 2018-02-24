@@ -190,7 +190,4 @@ class PostNew extends Component {
   }
 }
 
-const styles = {
-}
-
 export default PostNew;
