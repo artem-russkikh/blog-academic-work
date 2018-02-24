@@ -2,10 +2,8 @@ import React from 'react';
 import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
 import Button from 'material-ui/Button'
 import Typography from 'material-ui/Typography';
-import CardHeader from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
-import Paper from 'material-ui/Paper';
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import { FormControlLabel } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
 import moment from 'moment';
 import {Link} from 'react-router';
@@ -176,36 +174,5 @@ export default class Posts extends React.Component {
         </Grid>
       </div>
     );
-  }
-}
-
-
-const styles = {
-  card: {
-    height: 400,
-  },
-  imageContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 0.3,
-  },
-  image: {
-    maxWidth: 200
-  },
-  descriptionContainer: {
-  },
-  infoContainer: {
-    display: 'flex',
-    flex: 0.9,
-    padding: 10,
-  },
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 0.1,
-    marginLeft: 5,
-    marginRight: 5,
-    paddingBottom: 5,
-
   }
 }

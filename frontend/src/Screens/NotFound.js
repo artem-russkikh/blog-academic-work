@@ -15,7 +15,7 @@ class NotFound extends Component {
           justifyContent: 'center',
           zIndex: -100,
         }}>
-          <img className="responsive-img" src="https://i.imgur.com/f0yZgd2.png" />
+          <img className="responsive-img" src="https://i.imgur.com/f0yZgd2.png" alt="404 error" />
         </div>
       </div>
     )

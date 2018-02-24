@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import Typography from 'material-ui/Typography';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
-import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 
-class SignIn extends Component {
+export default class SignIn extends Component {
 
   constructor(props) {
     super(props)
@@ -95,15 +94,3 @@ class SignIn extends Component {
     );
   }
 }
-
-const styles = {
-  container: {
-    maxWidth: 420,
-    paddingTop: 100,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    paddingBottom: 40,
-  },
-}
-
-export default SignIn;
