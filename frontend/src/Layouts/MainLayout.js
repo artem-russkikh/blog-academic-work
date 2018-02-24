@@ -11,7 +11,7 @@ class MainLayout extends Component {
       <div>
         <AppBar position="static">
           <Toolbar>
-              <Button 
+              <Button
                 color="inherit"
                 component={Link}
                 to="/"
@@ -21,14 +21,21 @@ class MainLayout extends Component {
                 </Typography>
               </Button>
             <div style={styles.flex} />
-            <Button 
+            <Button
+              color="inherit"
+              component={Link}
+              to="/posts/new"
+            >
+              Новая запись
+            </Button>
+            <Button
               color="inherit"
               component={Link}
               to="/signin"
             >
               Вход
             </Button>
-            <Button 
+            <Button
               color="inherit"
               component={Link}
               to="/signup"
