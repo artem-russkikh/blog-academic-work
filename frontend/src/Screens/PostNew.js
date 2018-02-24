@@ -74,18 +74,20 @@ class PostNew extends Component {
   }
 
   render() {
-    let previewSource = ''
+    let titleMd = ''
+    let descriptionMd = ''
+    let bodyMd = ''
 
     const { title, description, body } = this.state.data
 
     if (title) {
-      previewSource = `# ${title}\n`
+      titleMd = `# ${title}`
     }
     if (description) {
-      previewSource = `${previewSource}> ${description}\n\n`
+      descriptionMd = description.split('\n').map(el => el ? `> ${el}\n` : '').join('')
     }
     if (body) {
-      previewSource = `${previewSource}${body}`
+      bodyMd = body
     }
 
     return (
@@ -128,7 +130,7 @@ class PostNew extends Component {
                 required
                 fullWidth
                 multiline
-                rows={2}
+                rows={4}
                 id="description"
                 label="Описание"
                 value={this.state.data.description}
@@ -155,7 +157,17 @@ class PostNew extends Component {
               }}>
                 <ReactMarkdown
                   className='markdown-preview'
-                  source={previewSource}
+                  source={titleMd}
+                  plugins={[breaks]}
+                />
+                <ReactMarkdown
+                  className='markdown-preview'
+                  source={descriptionMd}
+                  plugins={[breaks]}
+                />
+                <ReactMarkdown
+                  className='markdown-preview'
+                  source={bodyMd}
                   plugins={[breaks]}
                 />
               </Paper>
