@@ -5,6 +5,8 @@ import Typography from 'material-ui/Typography';
 import CardHeader from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
 import moment from 'moment';
 import {Link} from 'react-router';
 
@@ -96,7 +98,7 @@ const data = [
 ]
 
 const formattedDescription = (description) => {
-  return description && description.length > 120 ? 
+  return description && description.length > 120 ?
            `${description.substring(0, 120)}...` :
            description
 }
@@ -106,9 +108,34 @@ const formattedCreatedAt = (createdAt) => {
 }
 
 export default class Posts extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      onlyMyPosts: false
+    }
+  }
+
+  toggleSwitch = (_e) => {
+    this.setState({
+      onlyMyPosts: !this.state.onlyMyPosts
+    })
+  }
+
   render() {
     return (
-      <div style={styles.container}>
+      <div className="container">
+        <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.onlyMyPosts}
+                onChange={this.toggleSwitch}
+                value="onlyMyPosts"
+                color="primary"
+              />
+            }
+            label="Показывать только мои записи"
+          />
         <Grid container spacing={24}>
           {data.map((el, idx) => {
             return (
@@ -154,13 +181,6 @@ export default class Posts extends React.Component {
 
 
 const styles = {
-  container: {
-    maxWidth: 960,
-    marginTop: 40,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginBottom: 40,    
-  },
   card: {
     height: 400,
   },
@@ -186,6 +206,6 @@ const styles = {
     marginLeft: 5,
     marginRight: 5,
     paddingBottom: 5,
-    
+
   }
 }
