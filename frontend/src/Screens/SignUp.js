@@ -4,6 +4,7 @@ import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
+import badPasswords from '../badPasswords'
 
 class SignUp extends Component {
 
@@ -17,20 +18,40 @@ class SignUp extends Component {
         password: '',
         passwordRepeat: '',
       },
+      error: null,
     }
   }
 
   handleChange = (type) => (e) => {
-    this.setState({
+    let newState = {
       data: {
         ...this.state.data,
         [type]: e.target.value
+      },
+      error: null,
+    }
+
+    if (type === 'password' || type === 'passwordRepeat') {
+      const { password, passwordRepeat } = newState.data
+
+      if (badPasswords.indexOf(password) !== -1) {
+        newState.error = 'Пароль слишком простой'
       }
-    })
+
+      if (password !== passwordRepeat) {
+        newState.error = 'Пароли не совпадают'
+      }
+    }
+
+    this.setState(newState)
   }
 
   handleSend(e) {
     if (e) { e.preventDefault(); }
+
+    if (this.state.error) {
+      return
+    }
 
     const data = this.state.data
 
@@ -38,6 +59,8 @@ class SignUp extends Component {
   }
 
   render() {
+    const { error } = this.state
+
     return (
       <div style={{
         display: 'flex',
@@ -62,7 +85,14 @@ class SignUp extends Component {
               <CardContent style={{ minHeight: 92 }}>
                 <Typography variant="headline" component="h2">
                   Регистрация
-              </Typography>
+                </Typography>
+
+                { error ? (
+                  <Typography gutterBottom style={{color: 'red'}}>
+                    {error}
+                  </Typography>
+                ) : false }
+
                 <TextField
                   fullWidth
                   required
@@ -106,7 +136,7 @@ class SignUp extends Component {
                 />
               </CardContent>
               <CardActions>
-                <Button fullWidth type='submit' variant='raised' size="small" color="primary">
+                <Button disabled={!!error} fullWidth type='submit' variant='raised' size="small" color="primary">
                   Зарегистрироваться
                 </Button>
               </CardActions>
