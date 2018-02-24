@@ -9,25 +9,7 @@ import SignIn from './Screens/SignIn.js'
 import PostNew from './Screens/PostNew.js'
 import PostEdit from './Screens/PostEdit.js'
 import PostShow from './Screens/PostShow.js'
-
-const NotFound = () => {
-  return (
-    <div style={{
-      display: 'flex',
-      flex: 1,
-      height: '100%'
-    }}>
-      <div style={{
-        display: 'flex',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <img className="responsive-img" src="https://i.imgur.com/f0yZgd2.png"/>
-      </div>
-    </div>
-  )
-}
+import NotFound from './Screens/NotFound';
 
 export default () => {
   return (
