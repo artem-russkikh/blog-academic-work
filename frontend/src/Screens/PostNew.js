@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 import Button from 'material-ui/Button'
 import Typography from 'material-ui/Typography'
 import TextField from 'material-ui/TextField'
-import Avatar from 'material-ui/Avatar'
+import Paper from 'material-ui/Paper'
+import Grid from 'material-ui/Grid'
+import ReactMarkdown from 'react-markdown'
+import breaks from 'remark-breaks'
+
 
 class PostNew extends Component {
   constructor(props) {
@@ -15,6 +19,7 @@ class PostNew extends Component {
       data: {
         title: '',
         description: '',
+        body: '',
       },
     }
   }
@@ -69,75 +74,108 @@ class PostNew extends Component {
   }
 
   render() {
+    let previewSource = ''
+
+    const { title, description, body } = this.state.data
+
+    if (title) {
+      previewSource = `# ${title}\n`
+    }
+    if (description) {
+      previewSource = `${previewSource}> ${description}\n\n`
+    }
+    if (body) {
+      previewSource = `${previewSource}${body}`
+    }
+
     return (
-      <div style={styles.container}>
-        <Typography variant="headline" gutterBottom>
-          Новая запись
-        </Typography>
+      <div className="container">
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant="headline" gutterBottom>
+              Новая запись
+            </Typography>
 
-        <form onSubmit={(e) => this.handleSend(e)}>
-          { this.state.imagePreview ? (
-            <img
-              style={{
-                height: 200
-              }}
-              alt='Изображение'
-              src={this.state.imagePreview}
-              onClick={() => { this.fileInput.click() }}
-            />
-          ) : false }
+            <form onSubmit={(e) => this.handleSend(e)}>
+              { this.state.imagePreview ? (
+                <img
+                  style={{
+                    height: 200
+                  }}
+                  alt='Изображение'
+                  src={this.state.imagePreview}
+                  onClick={() => { this.fileInput.click() }}
+                />
+              ) : false }
 
-          <input
-            ref={r => { this.fileInput = r ;} }
-            onChange={(e) => this.handleImage(e)}
-            style={{ display: 'none' }}
-            type="file"
-          />
+              <input
+                ref={r => { this.fileInput = r ;} }
+                onChange={(e) => this.handleImage(e)}
+                style={{ display: 'none' }}
+                type="file"
+              />
 
-          <TextField
-            required
-            fullWidth
-            id="title"
-            label="Заголовок"
-            value={this.state.data.title}
-            onChange={this.handleChange('title')}
-            margin="normal"
-          />
-          <TextField
-            required
-            fullWidth
-            multiline
-            style={{
-              marginBottom: 40,
-            }}
-            id="description"
-            label="Описание"
-            value={this.state.data.description}
-            onChange={this.handleChange('description')}
-            margin="normal"
-          />
+              <TextField
+                required
+                fullWidth
+                id="title"
+                label="Заголовок"
+                value={this.state.data.title}
+                onChange={this.handleChange('title')}
+                margin="normal"
+              />
+              <TextField
+                required
+                fullWidth
+                multiline
+                rows={2}
+                id="description"
+                label="Описание"
+                value={this.state.data.description}
+                onChange={this.handleChange('description')}
+                margin="normal"
+              />
+              <TextField
+                required
+                fullWidth
+                multiline
+                rows={16}
+                style={{
+                  marginBottom: 40,
+                }}
+                id="body"
+                label="Содержимое"
+                value={this.state.data.body}
+                onChange={this.handleChange('body')}
+                margin="normal"
+              />
+              <Paper style={{
+                padding: '5px 20px',
+                marginBottom: 40,
+              }}>
+                <ReactMarkdown
+                  className='markdown-preview'
+                  source={previewSource}
+                  plugins={[breaks]}
+                />
+              </Paper>
 
-          <Button color="primary" onClick={() => { this.fileInput.click() }}>
-            Прикрепить изображение
-          </Button>
+              <Button color="primary" onClick={() => { this.fileInput.click() }}>
+                Прикрепить изображение
+              </Button>
 
-          <Button type='submit' variant="raised" color="primary">
-            Отправить
-          </Button>
-        </form>
+              <Button type='submit' variant="raised" color="primary">
+                Отправить
+              </Button>
+            </form>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
 
 const styles = {
-  container: {
-    maxWidth: 960,
-    marginTop: 40,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginBottom: 40
-  },
 }
 
 export default PostNew;
