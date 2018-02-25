@@ -4,7 +4,7 @@ import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 
-class SignIn extends Component {
+export default class SignIn extends Component {
 
   constructor(props) {
     super(props)
@@ -94,5 +94,3 @@ class SignIn extends Component {
     );
   }
 }
-
-export default SignIn;

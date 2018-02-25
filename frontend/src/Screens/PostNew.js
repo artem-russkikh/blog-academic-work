@@ -9,7 +9,7 @@ import ReactMarkdown from 'react-markdown'
 import breaks from 'remark-breaks'
 
 
-class PostNew extends Component {
+export default class PostNew extends Component {
   constructor(props) {
     super(props)
 
@@ -189,5 +189,3 @@ class PostNew extends Component {
     );
   }
 }
-
-export default PostNew;

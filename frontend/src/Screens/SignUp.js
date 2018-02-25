@@ -5,7 +5,7 @@ import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import badPasswords from '../badPasswords'
 
-class SignUp extends Component {
+export default class SignUp extends Component {
 
   constructor(props) {
     super(props)
@@ -146,5 +146,3 @@ class SignUp extends Component {
     );
   }
 }
-
-export default SignUp;
