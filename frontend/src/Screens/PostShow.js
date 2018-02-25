@@ -17,7 +17,7 @@ class PostShow extends Component {
 
     const { params } = this.props
     const postId = params && params.id ? params.id : null
-    const post = data.find(el => parseInt(el.id) === parseInt(postId))
+    const post = data.find(el => parseInt(el.id, 10) === parseInt(postId, 10))
 
     if (post) {
       const { image, title, description, body } = post
