@@ -30,16 +30,34 @@ export default class SignUp extends Component {
       error: null,
     }
 
+    const { email, password, passwordRepeat } = newState.data
+
     if (type === 'password' || type === 'passwordRepeat') {
-      const { password, passwordRepeat } = newState.data
+      const passwordRegexp = /(^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$)/
+
+      if (password !== passwordRepeat) {
+        newState.error = 'Пароли не совпадают'
+      }
 
       if (badPasswords.indexOf(password) !== -1) {
         newState.error = 'Пароль слишком простой'
       }
 
-      if (password !== passwordRepeat) {
-        newState.error = 'Пароли не совпадают'
+      if (!password.match(passwordRegexp)) {
+        newState.error = 'Пароль должен быть не менее 8 символов; содержать буквы, цифры и специальные символы'
       }
+    }
+
+    if (type === 'email') {
+      const emailRegexp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+
+      if (!email.match(emailRegexp)) {
+        newState.error = 'Email некорректный'
+      }
+    }
+
+    if (!password && !passwordRepeat && !email) {
+      newState.error = undefined
     }
 
     this.setState(newState)
