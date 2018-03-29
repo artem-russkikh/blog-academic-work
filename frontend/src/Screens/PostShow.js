@@ -3,6 +3,7 @@ import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import ReactMarkdown from 'react-markdown';
 import breaks from 'remark-breaks';
+import Button from 'material-ui/Button';
 import { Link } from 'react-router';
 
 import data from '../data'
@@ -69,6 +70,14 @@ class PostShow extends Component {
         <Grid container>
           <Grid item xs={12}>
             { content }
+            <Button
+              color="inherit"
+              variant="raised"
+              component={Link}
+              to={`/posts/edit/${postId}`}
+            >
+              Редактировать запись
+            </Button>
           </Grid>
         </Grid>
       </div>

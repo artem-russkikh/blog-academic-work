@@ -100,12 +100,11 @@ export default class PostNew extends Component {
 
             <form onSubmit={(e) => this.handleSend(e)}>
               { this.state.imagePreview ? (
-                <img
+                <div
                   style={{
-                    height: 200
+                    background: `url(${this.state.imagePreview}) center top / cover no-repeat`,
+                    height: 300,
                   }}
-                  alt='Изображение'
-                  src={this.state.imagePreview}
                   onClick={() => { this.fileInput.click() }}
                 />
               ) : false }
