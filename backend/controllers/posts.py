@@ -1,4 +1,5 @@
 from flask_restful import request, Resource
+from flask import jsonify
 from api_helper import Response, not_authorized
 from models.post import create_post, get_posts
 from models.authorization import try_get_user_id
@@ -8,7 +9,7 @@ class Posts(Resource):
         limit = request.form['limit']
         offset = request.form['offset']
 
-        return get_posts(limit, offset)
+        return jsonify(get_posts(limit, offset))
     
     def post(self):
         token = request.headers['Authorization']
@@ -23,4 +24,4 @@ class Posts(Resource):
         if not id_exist:
             return not_authorized
 
-        return create_post(user_id, title, description, body, image)
+        return jsonify(create_post(user_id, title, description, body, image))
