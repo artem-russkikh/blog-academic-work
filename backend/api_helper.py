@@ -1,11 +1,13 @@
+import json
+
 def Response(result, err_code, err_mes):
-    return {
+    return json.dumps({
     'result': result, 
     'error':{ 
         'code': err_code,
         'message': err_mes 
     }
-    }
+    })
 
 def successful(text):
     return Response(text, 0, '')

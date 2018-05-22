@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Table, Column, Integer, String, Binary, Me
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from config import db_name
+import base64
 
 engine = create_engine('sqlite:///' + db_name, echo=False)
 Session = sessionmaker(bind=engine)
@@ -24,11 +25,12 @@ class Post(declarative_base()):
         self.body = body
         self.image = image
 
+
     def to_json(self):
         return {
         'author_id': self.author_id,
         'title': self.title,
         'description': self.description,
         'body': self.body,
-        'image': self.image
+        'image': None if self.image == None else base64.b64encode(self.image).decode('utf-8')
         }
