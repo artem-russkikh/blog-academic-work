@@ -83,6 +83,8 @@ export default class PostEdit extends Component {
   handleSend(e) {
     if (e) { e.preventDefault(); }
 
+    this.setState({ inTimeout: true })
+
     const data = this.state.data
 
     let form_data = new FormData()
@@ -97,11 +99,12 @@ export default class PostEdit extends Component {
 
     var config = {
       headers:
-      {
-        //FIXME: pls put token here
-        'Authorization': 'test' 
-      }
+        {
+          //FIXME: pls put token here
+          'Authorization': 'test'
+        }
     };
+
 
     axios.put(`http://127.0.0.1:5000/posts/${this.state.post_id}.json`, form_data, config)
       .then(res => {
@@ -118,6 +121,33 @@ export default class PostEdit extends Component {
       })
       .catch(err => {
         this.show_default('Ошибка обновления поста');
+      });
+  }
+
+  delete_post() {
+
+    var config = {
+      headers:
+        {
+          //FIXME: pls put token here
+          'Authorization': 'test'
+        }
+    };
+
+    axios.delete(`http://127.0.0.1:5000/posts/${this.state.post_id}.json`, config)
+      .then(res => {
+        const errCode = res.data['error']['code'];
+
+        if (errCode !== 0) {
+          this.show_default('Ошибка сервера');
+          return;
+        }
+
+        browserHistory.push(`/`)
+
+      })
+      .catch(err => {
+        this.show_default('Ошибка удаления поста');
       });
   }
 
@@ -160,10 +190,6 @@ export default class PostEdit extends Component {
 
   render() {
     let content = '';
-
-    //const { params } = this.props
-    //const postId = params && params.id ? params.id : null
-    //const post = data.find(el => parseInt(el.id, 10) === parseInt(postId, 10))
 
     if (this.state.default) {
       content = (
@@ -271,14 +297,15 @@ export default class PostEdit extends Component {
                 plugins={[breaks]}
               />
             </Paper>
-
             <div>
               <Button style={{ marginRight: 10 }} color="primary" onClick={() => { this.fileInput.click() }}>
                 Прикрепить изображение
               </Button>
-
-              <Button type='submit' variant="raised" color="primary">
+              <Button type='submit' disabled={this.state.inTimeout} variant="raised" color="primary" style={{ marginRight: 10 }}>
                 Отправить
+              </Button>
+              <Button onClick={ () => { if(window.confirm('Действительно удалить пост?')) this.delete_post(); }} disabled={this.state.inTimeout} variant="raised" color="primary" style={{ backgroundColor: "#8B0000" }}>
+                Удалить
               </Button>
             </div>
           </form>

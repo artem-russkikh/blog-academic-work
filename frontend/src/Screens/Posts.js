@@ -16,7 +16,7 @@ const formattedDescription = (description) => {
 }
 
 const formattedCreatedAt = (createdAt) => {
-  return moment(createdAt).fromNow()
+  return moment.utc(createdAt).fromNow()
 }
 
 export default class Posts extends React.Component {
