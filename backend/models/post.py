@@ -1,6 +1,5 @@
 from api_helper import Response, internal_server_error, successful, not_found
 from db_helper import Session, Post
-import traceback
 
 def create_post(author_id, title, description, body):
     session = Session()
@@ -22,8 +21,6 @@ def get_post(post_id):
         post = session.query(Post).get(post_id)
         return not_found if post == None else successful(post.to_json())
     except:
-        traceback.print_exc()
-        session.rollback()
         return internal_server_error
     finally:
         session.close()
@@ -63,4 +60,10 @@ def delete_post(post_id):
 
 
 def get_posts(limit, offset):
-    pass
+    session = Session()
+    try:
+        return session.query(Post.id, Post.title, Post.description).limit(limit).offset(offset).all()
+    except:
+        return internal_server_error
+    finally:
+        session.close()
