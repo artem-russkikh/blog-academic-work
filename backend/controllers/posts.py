@@ -8,8 +8,8 @@ from config import image_format
 
 class Posts(Resource):
     def get(self):
-        limit = request.form['limit']
-        offset = request.form['offset']
+        limit = request.args.get('limit')
+        offset = request.args.get('offset')
 
         resp = get_posts(limit, offset)
 

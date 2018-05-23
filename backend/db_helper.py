@@ -14,9 +14,11 @@ class Post(declarative_base()):
     title = Column(String, nullable=False)
     description = Column(String)
     body = Column(String)
+    created_at = Column(String)
 
-    def __init__(self, author_id, title, description, body):
+    def __init__(self, author_id, title, description, body, created_at):
         self.author_id = author_id
         self.title = title
         self.description = description
         self.body = body
+        self.created_at = created_at

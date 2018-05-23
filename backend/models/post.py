@@ -1,11 +1,12 @@
 from api_helper import Response, internal_server_error, successful, not_found
 from db_helper import Session, Post
 from config import image_format, image_host
+from time import gmtime, strftime
 
 def create_post(author_id, title, description, body):
     session = Session()
     try:
-        post = Post(author_id, title, description, body)
+        post = Post(author_id, title, description, body, strftime("%Y-%m-%dT%H:%M:%S", gmtime()))
         session.add(post)
         session.commit()
         return successful(post.id)
@@ -28,6 +29,7 @@ def get_post(post_id):
             'title': post.title,
             'description': post.description,
             'body': post.body,
+            'created_at': post.created_at,
             'image': image_host + '/' + image_format(post.id)
             })
     except:
@@ -73,12 +75,13 @@ def get_posts(limit, offset):
     session = Session()
     try:
         result = []
-        for post in session.query(Post.id, Post.author_id, Post.title, Post.description).limit(limit).offset(offset).all():
+        for post in session.query(Post.id, Post.author_id, Post.title, Post.description, Post.created_at).limit(limit).offset(offset).all():
             result.append({
-                'post_id': post.id,
+                'id': post.id,
                 'author_id': post.author_id,
                 'title': post.title,
                 'description': post.description,
+                'created_at': post.created_at,
                 'image': image_host + '/' + image_format(post.id)
                 })
         
