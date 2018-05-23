@@ -82,6 +82,8 @@ export default class PostEdit extends Component {
 
   handleSend(e) {
     if (e) { e.preventDefault(); }
+    
+    this.setState({inTimeout:true})
 
     const data = this.state.data
 
@@ -102,6 +104,7 @@ export default class PostEdit extends Component {
         'Authorization': 'test' 
       }
     };
+
 
     axios.put(`http://127.0.0.1:5000/posts/${this.state.post_id}.json`, form_data, config)
       .then(res => {
@@ -277,7 +280,7 @@ export default class PostEdit extends Component {
                 Прикрепить изображение
               </Button>
 
-              <Button type='submit' variant="raised" color="primary">
+              <Button type='submit' disabled={this.state.inTimeout} variant="raised" color="primary">
                 Отправить
               </Button>
             </div>

@@ -33,6 +33,8 @@ export default class PostNew extends Component {
   handleSend(e) {
     if (e) { e.preventDefault(); }
 
+    this.setState({inTimeout:true})
+    
     const data = this.state.data
 
     let form_data = new FormData()
@@ -214,7 +216,7 @@ export default class PostNew extends Component {
                   Прикрепить изображение
                 </Button>
 
-                <Button type='submit' variant="raised" color="primary">
+                <Button type='submit' disabled={this.state.inTimeout} variant="raised" color="primary">
                   Отправить
                 </Button>
               </div>
