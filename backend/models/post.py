@@ -1,13 +1,14 @@
 from api_helper import Response, internal_server_error, successful, not_found
 from db_helper import Session, Post
+import traceback
 
-def create_post(author_id, title, description, body, image):
+def create_post(author_id, title, description, body):
     session = Session()
     try:
-        post = Post(author_id, title, description, body, image)
+        post = Post(author_id, title, description, body)
         session.add(post)
         session.commit()
-        return successful('post_id:{}'.format(post.id))
+        return successful(post.id)
     except:
         session.rollback()
         return internal_server_error
@@ -21,6 +22,7 @@ def get_post(post_id):
         post = session.query(Post).get(post_id)
         return not_found if post == None else successful(post.to_json())
     except:
+        traceback.print_exc()
         session.rollback()
         return internal_server_error
     finally:

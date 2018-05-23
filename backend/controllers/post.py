@@ -3,10 +3,15 @@ from flask import jsonify
 from api_helper import Response, not_authorized
 from models.post import get_post, update_post, delete_post
 from models.authorization import try_get_user_id
+from flask import abort
 
 class Post(Resource):
     def get(self, post_id):
-        return jsonify(get_post(post_id))
+        post = get_post(post_id)
+        if post['error']['code'] == 404:
+            abort(404)
+
+        return jsonify(post)
 
     def put(self, post_id):
         token = request.headers['Authorization']
