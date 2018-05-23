@@ -1,7 +1,8 @@
 from api_helper import Response, internal_server_error, successful, not_found
 from db_helper import Session, Post
-from config import image_format, image_host
+from config import image_format, image_host, stub_image
 from time import gmtime, strftime
+import os
 
 def create_post(author_id, title, description, body):
     session = Session()
@@ -24,13 +25,20 @@ def get_post(post_id):
         if post == None:
             return not_found 
         else:
+            image_path = image_format(post.id)
+
+            if os.path.isfile(image_path):
+                image_path = image_host + '/' + image_path
+            else:
+                image_path = stub_image
+
             return successful({
             'author_id': post.author_id,
             'title': post.title,
             'description': post.description,
             'body': post.body,
             'created_at': post.created_at,
-            'image': image_host + '/' + image_format(post.id)
+            'image': image_path
             })
     except:
         return internal_server_error
@@ -76,13 +84,20 @@ def get_posts(limit, offset):
     try:
         result = []
         for post in session.query(Post.id, Post.author_id, Post.title, Post.description, Post.created_at).limit(limit).offset(offset).all():
+            image_path = image_format(post.id)
+
+            if os.path.isfile(image_path):
+                image_path = image_host + '/' + image_path
+            else:
+                image_path = stub_image
+
             result.append({
                 'id': post.id,
                 'author_id': post.author_id,
                 'title': post.title,
                 'description': post.description,
                 'created_at': post.created_at,
-                'image': image_host + '/' + image_format(post.id)
+                'image': image_path
                 })
         
         return successful(result)
