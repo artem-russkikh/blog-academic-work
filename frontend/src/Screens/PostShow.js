@@ -14,6 +14,7 @@ export default class PostShow extends Component {
     super(props)
 
     this.state = {
+      my_id:1,
       noContent: false,
       post_id: 0,
     }
@@ -89,6 +90,7 @@ export default class PostShow extends Component {
             source={this.state.body}
             plugins={[breaks]}
           />
+          {this.state.my_id === this.state.author_id && 
           <Button
             color="inherit"
             variant="raised"
@@ -97,6 +99,7 @@ export default class PostShow extends Component {
           >
             Редактировать запись
           </Button>
+          }
         </div>
       );
 
