@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Table, Column, Integer, String, Binary, MetaData
+from sqlalchemy import create_engine, Table, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from config import db_name
@@ -15,7 +15,7 @@ class Post(declarative_base()):
     title = Column(String, nullable=False)
     description = Column(String)
     body = Column(String)
-    image = Column(Binary)
+    image = Column(String)
 
     
     def __init__(self, author_id, title, description, body, image):
@@ -32,5 +32,5 @@ class Post(declarative_base()):
         'title': self.title,
         'description': self.description,
         'body': self.body,
-        'image': None if self.image == None else base64.b64encode(self.image).decode('utf-8')
+        'image': self.image
         }
