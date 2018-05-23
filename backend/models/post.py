@@ -1,11 +1,12 @@
 from api_helper import Response, internal_server_error, successful, not_found
 from db_helper import Session, Post
-import traceback
+from config import image_format, image_host
+from time import gmtime, strftime
 
 def create_post(author_id, title, description, body):
     session = Session()
     try:
-        post = Post(author_id, title, description, body)
+        post = Post(author_id, title, description, body, strftime("%Y-%m-%dT%H:%M:%S", gmtime()))
         session.add(post)
         session.commit()
         return successful(post.id)
@@ -20,10 +21,18 @@ def get_post(post_id):
     session = Session()
     try:
         post = session.query(Post).get(post_id)
-        return not_found if post == None else successful(post.to_json())
+        if post == None:
+            return not_found 
+        else:
+            return successful({
+            'author_id': post.author_id,
+            'title': post.title,
+            'description': post.description,
+            'body': post.body,
+            'created_at': post.created_at,
+            'image': image_host + '/' + image_format(post.id)
+            })
     except:
-        traceback.print_exc()
-        session.rollback()
         return internal_server_error
     finally:
         session.close()
@@ -63,4 +72,21 @@ def delete_post(post_id):
 
 
 def get_posts(limit, offset):
-    pass
+    session = Session()
+    try:
+        result = []
+        for post in session.query(Post.id, Post.author_id, Post.title, Post.description, Post.created_at).limit(limit).offset(offset).all():
+            result.append({
+                'id': post.id,
+                'author_id': post.author_id,
+                'title': post.title,
+                'description': post.description,
+                'created_at': post.created_at,
+                'image': image_host + '/' + image_format(post.id)
+                })
+        
+        return successful(result)
+    except:
+        return internal_server_error
+    finally:
+        session.close()
