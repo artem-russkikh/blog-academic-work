@@ -29,15 +29,14 @@ def get_post(post_id):
         session.close()
 
 
-def update_post(title, description, body, image, post_id):
+def update_post(title, description, body, post_id):
     session = Session()
     try:
         session.query(Post).filter(Post.id == post_id).update(
             {
             'title': title,
             'description': description,
-            'body': body,
-            'image': image
+            'body': body
             }
         )
 

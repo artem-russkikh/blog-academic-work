@@ -11,17 +11,21 @@ class Posts(Resource):
         limit = request.form['limit']
         offset = request.form['offset']
 
-        return jsonify(get_posts(limit, offset))
+        resp = get_posts(limit, offset)
+
+        if resp['error']['code'] == 404:
+            abort(404)
+
+        return jsonify(resp)
     
     def post(self):
-        token = request.headers['Authorization']
+        id_exist, user_id = try_get_user_id(request.headers['Authorization'])
+
+        if not id_exist:
+            abort(401)
         
         if not 'post_data' in request.form:
             abort(204)
-
-        f = None
-        if 'image' in request.files:
-            f = request.files['image']
 
         data = json.loads(request.form['post_data'])
 
@@ -29,14 +33,13 @@ class Posts(Resource):
         description = data['description']
         body = data['body']
 
-        id_exist, user_id = try_get_user_id(token)
+        resp = create_post(user_id, title, description, body)
 
-        if not id_exist:
-            return not_authorized
-
-        post = create_post(user_id, title, description, body)
+        if resp['error']['code'] == 404:
+            abort(404)
         
-        if f != None:
-            f.save(image_format(post['result']))
+        if 'image' in request.files:
+            f = request.files['image']
+            f.save(image_format(resp['result']))
 
-        return jsonify(post)
+        return jsonify(resp)
