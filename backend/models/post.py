@@ -71,6 +71,12 @@ def delete_post(post_id):
     try:
         session.query(Post).filter(Post.id == post_id).delete()
         session.commit()
+
+        image_path = image_format(post_id)
+
+        if os.path.isfile(image_path):
+            os.remove(image_path)
+
         return successful('Post {} deleted'.format(post_id))
     except:
         session.rollback()
