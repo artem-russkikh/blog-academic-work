@@ -8,26 +8,76 @@ import Grid from 'material-ui/Grid'
 import ReactMarkdown from 'react-markdown'
 import breaks from 'remark-breaks'
 import { Link } from 'react-router'
-
-import data from '../data'
+import axios from 'axios'
+import { browserHistory } from 'react-router';
 
 export default class PostEdit extends Component {
   constructor(props) {
     super(props)
 
-    const { params } = props
-    const postId = params && params.id ? params.id : null
-    const post = data.find(el => parseInt(el.id, 10) === parseInt(postId, 10))
-
     this.state = {
-      imagePreview: post.image,
-      imageFile: null,
+      default: false,
+      post_id: 0,
+      author_id: '',
       data: {
-        title: post.title,
-        description: post.description,
-        body: post.body,
+        title: '',
+        description: '',
+        body: ''
       },
+      image: '',
+      imageFile: null,
     }
+
+    //this.state = {
+    //  image: post.image,
+    //  imageFile: null,
+    //  data: {
+    //    title: post.title,
+    //    description: post.description,
+    //    body: post.body,
+    //  },
+    //}
+  }
+
+  componentDidMount() {
+    const { params } = this.props
+    const postId = (params && params.id) ? params.id : null
+
+    if (postId == null) {
+      this.show_default('Ошибка');
+      return;
+    }
+
+    axios.get(`http://127.0.0.1:5000/posts/${postId}.json`)
+      .then(res => {
+        const errCode = res.data['error']['code'];
+
+        if (errCode !== 0) {
+          this.show_default(errCode === 404 ? 'Пост удален или еще не был создан' : 'Ошибка сервера');
+          return;
+        }
+
+        const post_data = res.data['result'];
+
+        this.setState({
+          default: false,
+          post_id: postId,
+          author_id: post_data.author_id,
+          data: {
+            title: post_data.title,
+            description: post_data.description,
+            body: post_data.body
+          },
+          image: post_data.image
+        });
+      })
+      .catch(err => {
+        this.show_default('Ошибка');
+      });
+  }
+
+  show_default(text) {
+    alert(text);
   }
 
   handleSend(e) {
@@ -35,11 +85,40 @@ export default class PostEdit extends Component {
 
     const data = this.state.data
 
-    if (this.state.imageFile) {
-    }
+    let form_data = new FormData()
 
-    console.log(this.state.imageFile)
-    console.log(data)
+    form_data.append('post_data', JSON.stringify(this.state.data))
+
+    if (this.state.imageFile)
+      form_data.append('image', this.state.imageFile)
+
+    console.log(form_data.get('image'))
+    console.log(form_data.get('data'))
+
+    var config = {
+      headers:
+      {
+        //FIXME: pls put token here
+        'Authorization': 'test' 
+      }
+    };
+
+    axios.put(`http://127.0.0.1:5000/posts/${this.state.post_id}.json`, form_data, config)
+      .then(res => {
+        const errCode = res.data['error']['code'];
+
+        if (errCode !== 0) {
+          this.show_default('Ошибка сервера');
+          return;
+        }
+
+        //wait, then redirect to updated post
+        setTimeout(() => browserHistory.push(`/posts/${this.state.post_id}`), 500)
+
+      })
+      .catch(err => {
+        this.show_default('Ошибка обновления поста');
+      });
   }
 
   handleChange = (type) => (e) => {
@@ -62,16 +141,16 @@ export default class PostEdit extends Component {
 
     // FileReader support
     if (FileReader && files && files.length) {
-        let fr = new FileReader();
-        fr.onload = () => {
-          this.setState({
-            imagePreview: fr.result
-          })
-        }
-        fr.readAsDataURL(files[0]);
+      let fr = new FileReader();
+      fr.onload = () => {
+        this.setState({
+          image: fr.result
+        })
+      }
+      fr.readAsDataURL(files[0]);
     } else {
-        // fallback -- perhaps submit the input to an iframe and temporarily store
-        // them on the server until the user's session ends.
+      // fallback -- perhaps submit the input to an iframe and temporarily store
+      // them on the server until the user's session ends.
     }
 
     this.setState({
@@ -80,17 +159,23 @@ export default class PostEdit extends Component {
   }
 
   render() {
-    let content = (
-      <Typography variant='alignCenter'>
-        Нет такой записи, вернитесь <Link to="/">на главную</Link>
-      </Typography>
-    );
+    let content = '';
 
-    const { params } = this.props
-    const postId = params && params.id ? params.id : null
-    const post = data.find(el => parseInt(el.id, 10) === parseInt(postId, 10))
+    //const { params } = this.props
+    //const postId = params && params.id ? params.id : null
+    //const post = data.find(el => parseInt(el.id, 10) === parseInt(postId, 10))
 
-    if (post) {
+    if (this.state.default) {
+      content = (
+        <div>
+          <Typography variant='alignCenter'>
+            {this.state.title}
+          </Typography>
+        </div>
+      );
+
+    } else {
+
       let titleMd = ''
       let descriptionMd = ''
       let bodyMd = ''
@@ -114,18 +199,18 @@ export default class PostEdit extends Component {
           </Typography>
 
           <form onSubmit={(e) => this.handleSend(e)}>
-            { this.state.imagePreview ? (
+            {this.state.image ? (
               <div
                 style={{
-                  background: `url(${this.state.imagePreview}) center top / cover no-repeat`,
+                  background: `url(${this.state.image}) center top / cover no-repeat`,
                   height: 300,
                 }}
                 onClick={() => { this.fileInput.click() }}
               />
-            ) : false }
+            ) : false}
 
             <input
-              ref={r => { this.fileInput = r ;} }
+              ref={r => { this.fileInput = r; }}
               onChange={(e) => this.handleImage(e)}
               style={{ display: 'none' }}
               accept="image/*"
