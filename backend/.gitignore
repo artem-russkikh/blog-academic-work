@@ -1,5 +1,6 @@
 images/*
 !images/.gitkeep
+!images/default.jpg
 test.py
 *.sqlite
 .vscode

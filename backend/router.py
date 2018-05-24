@@ -12,4 +12,4 @@ class Router:
         api.add_resource(SignUp, '/signup.json')
         api.add_resource(Posts, '/posts.json')
         api.add_resource(Post, '/posts/<int:post_id>.json')
-        api.add_resource(Image, '/images/<int:image_id>.jpg')
+        api.add_resource(Image, '/images/<string:image_id>.jpg')
