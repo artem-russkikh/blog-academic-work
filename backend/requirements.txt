@@ -2,3 +2,5 @@ Flask==1.0.2
 flask_cors==3.0.4
 flask_restful==0.3.6
 SQLAlchemy==1.2.7
+beautifulsoup4==4.6.0
+lxml==4.2.1
