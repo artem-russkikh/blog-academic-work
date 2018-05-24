@@ -19,7 +19,7 @@ class Post(Resource):
 
         if not id_exist:
             abort(401)
-        
+
         if not 'post_data' in request.form:
             abort(204)
 
@@ -33,7 +33,7 @@ class Post(Resource):
 
         if resp['error']['code'] == 404:
             abort(404)
-        
+
         if 'image' in request.files:
             f = request.files['image']
             f.save(image_format(post_id))
@@ -42,10 +42,10 @@ class Post(Resource):
 
     def delete(self, post_id):
         id_exist, _ = try_get_user_id(request.headers['Authorization'])
-        
+
         if not id_exist:
             abort(401)
-            
+
         resp = delete_post(post_id)
 
         if resp['error']['code'] == 404:

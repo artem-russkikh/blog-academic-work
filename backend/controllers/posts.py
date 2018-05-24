@@ -17,13 +17,13 @@ class Posts(Resource):
             abort(404)
 
         return jsonify(resp)
-    
+
     def post(self):
         id_exist, user_id = try_get_user_id(request.headers['Authorization'])
 
         if not id_exist:
             abort(401)
-        
+
         if not 'post_data' in request.form:
             abort(204)
 
@@ -37,7 +37,7 @@ class Posts(Resource):
 
         if resp['error']['code'] == 404:
             abort(404)
-        
+
         if 'image' in request.files:
             f = request.files['image']
             f.save(image_format(resp['result']))

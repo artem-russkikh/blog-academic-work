@@ -23,7 +23,7 @@ def get_post(post_id):
     try:
         post = session.query(Post).get(post_id)
         if post == None:
-            return not_found 
+            return not_found
         else:
             image_path = image_format(post.id)
 
@@ -105,7 +105,7 @@ def get_posts(limit, offset):
                 'created_at': post.created_at,
                 'image': image_path
                 })
-        
+
         return successful(result)
     except:
         return internal_server_error
