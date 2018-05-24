@@ -43,7 +43,7 @@ print('#' * 100)
 print('')
 
 tree = html.fromstring(html_text)
-xpath = "//tr/td[@class='title'][2]/a[@class='storylink']"
+xpath = "/html/body/center/table[@id='hnmain']//tr/td[@class='title'][2]/a[@class='storylink']"
 linksXpath = tree.xpath(xpath)
 print('XPATH')
 print(len(linksXpath))
