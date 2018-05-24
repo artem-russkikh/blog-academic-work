@@ -24,14 +24,21 @@ export default class Posts extends React.Component {
     super(props)
 
     this.state = {
+      limit: 20,
+      offset: 0,
+      allFetched: false,
       onlyMyPosts: false,
-      data: null,
+      data: [],
       stub: 'Пока что записей нет.'
     }
   }
 
   componentDidMount() {
-    axios.get(`http://127.0.0.1:5000/posts.json`, {params: { limit: 20, offset: 0 }})
+    this._fetch()
+  }
+
+  _fetch = () => {
+    axios.get(`http://127.0.0.1:5000/posts.json`, {params: { limit: this.state.limit, offset: this.state.offset }})
       .then(res => {
         const errCode = res.data['error']['code'];
 
@@ -42,8 +49,16 @@ export default class Posts extends React.Component {
 
         const post_data = res.data['result'];
 
-        if(post_data.length !== 0)
-          this.setState({data: post_data});
+        let allFetched = false
+        if (post_data.length < this.state.limit) {
+          allFetched = true
+        }
+
+        this.setState((state) => ({
+          data: [...state.data, ...post_data],
+          offset: state.offset + 20,
+          allFetched,
+        }));
       })
       .catch(err => {
           this.setState({stub:'Ошибка ' + err});
@@ -126,6 +141,20 @@ export default class Posts extends React.Component {
               )
             })}
           </Grid>
+          { !this.state.allFetched && (
+              <div style={{
+                textAlign: 'center',
+                marginTop: 20,
+              }}>
+                <Button
+                  variant='raised'
+                  color="primary"
+                  onClick={this._fetch}
+                >
+                  Еще
+                </Button>
+              </div>
+            ) }
         </div>
       );
   }
