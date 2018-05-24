@@ -194,7 +194,7 @@ export default class PostEdit extends Component {
     if (this.state.default) {
       content = (
         <div>
-          <Typography variant='alignCenter'>
+          <Typography variant='headline'>
             {this.state.title}
           </Typography>
         </div>

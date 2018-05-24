@@ -62,7 +62,7 @@ export default class PostShow extends Component {
     let content = this.state.noContent ?
       (
         <div>
-          <Typography variant='alignCenter'>
+          <Typography variant='headline'>
             {this.state.strub}
           </Typography>
         </div>
@@ -90,7 +90,7 @@ export default class PostShow extends Component {
             source={this.state.body}
             plugins={[breaks]}
           />
-          {this.state.my_id === this.state.author_id && 
+          {this.state.my_id === this.state.author_id &&
           <Button
             color="inherit"
             variant="raised"

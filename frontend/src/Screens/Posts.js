@@ -42,7 +42,7 @@ export default class Posts extends React.Component {
         }
 
         const post_data = res.data['result'];
-        
+
         if(post_data.length != 0)
           this.setState({data: post_data});
       })
@@ -63,7 +63,7 @@ export default class Posts extends React.Component {
         <div className="container">
           <Grid container>
             <Grid item xs={12}>
-              <Typography variant='alignCenter'>
+              <Typography variant='headline'>
                 {this.state.stub}
                 </Typography>
             </Grid>
