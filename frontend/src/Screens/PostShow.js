@@ -14,7 +14,6 @@ export default class PostShow extends Component {
     super(props)
 
     this.state = {
-      my_id:1,
       noContent: false,
       post_id: 0,
     }
@@ -59,6 +58,13 @@ export default class PostShow extends Component {
 
   render() {
     //const post = data.find(el => parseInt(el.id, 10) === parseInt(postId, 10))
+
+    const user = JSON.parse(window.localStorage.getItem('user'))
+    let userId = null
+    if (user) {
+      userId = user.id
+    }
+
     let content = this.state.noContent ?
       (
         <div>
@@ -90,7 +96,7 @@ export default class PostShow extends Component {
             source={this.state.body}
             plugins={[breaks]}
           />
-          {this.state.my_id === this.state.author_id &&
+          {userId === this.state.author_id &&
           <Button
             color="inherit"
             variant="raised"

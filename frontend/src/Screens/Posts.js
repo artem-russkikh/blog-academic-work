@@ -24,7 +24,6 @@ export default class Posts extends React.Component {
     super(props)
 
     this.state = {
-      my_id: 1,
       onlyMyPosts: false,
       data: null,
       stub: 'Пока что записей нет.'
@@ -43,7 +42,7 @@ export default class Posts extends React.Component {
 
         const post_data = res.data['result'];
 
-        if(post_data.length != 0)
+        if(post_data.length !== 0)
           this.setState({data: post_data});
       })
       .catch(err => {
@@ -58,7 +57,9 @@ export default class Posts extends React.Component {
   }
 
   render() {
-    return this.state.data == null ?
+    const user = JSON.parse(window.localStorage.getItem('user'))
+
+    return this.state.data === null ?
       (
         <div className="container">
           <Grid container>
@@ -73,20 +74,22 @@ export default class Posts extends React.Component {
       :
       (
         <div className="container">
-          <FormControlLabel
-            control={
-              <Switch
-                checked={this.state.onlyMyPosts}
-                onChange={this.toggleSwitch}
-                value="onlyMyPosts"
-                color="primary"
-              />
-            }
-            label="Показывать только мои записи"
-          />
+          { user && (
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.onlyMyPosts}
+                  onChange={this.toggleSwitch}
+                  value="onlyMyPosts"
+                  color="primary"
+                />
+              }
+              label="Показывать только мои записи"
+            />
+          ) }
           <Grid container spacing={24}>
             {this.state.data.map((post, idx) => {
-              {if(this.state.onlyMyPosts && post.author_id != this.state.my_id) return; }
+              {if(user && this.state.onlyMyPosts && post.author_id !== user.id) return; }
               return (
                 <Grid item xs={12} sm={6} key={idx}>
                   <Card style={{ maxWidth: 450 }}>

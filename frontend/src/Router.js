@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, IndexRoute, Route, browserHistory } from 'react-router'
+import { Router, IndexRoute, Route, browserHistory, Redirect } from 'react-router'
 
 import MainLayout from './Layouts/MainLayout.js'
 
@@ -18,6 +18,12 @@ export default () => {
         <IndexRoute component={Posts}/>
         <Route path="/signup" component={SignUp}/>
         <Route path="/signin" component={SignIn}/>
+        <Route path="/signout" component={() => {
+          window.localStorage.removeItem('user')
+          // setTimeout(() => , 500)
+          browserHistory.push('/')
+          return <div />
+        }}/>
         <Route path="/posts/new" component={PostNew}/>
         <Route path="/posts/edit/:id" component={PostEdit}/>
         <Route path="/posts/:id" component={PostShow}/>

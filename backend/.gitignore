@@ -1,4 +1,5 @@
-images
+images/*
+!images/.gitkeep
 test.py
 *.sqlite
 .vscode

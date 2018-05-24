@@ -24,6 +24,11 @@ export default class PostNew extends Component {
         body: '',
       },
     }
+
+    const user = JSON.parse(window.localStorage.getItem('user'))
+    if (!user) {
+      browserHistory.push('/')
+    }
   }
 
   show_default(text) {
@@ -33,29 +38,32 @@ export default class PostNew extends Component {
   handleSend(e) {
     if (e) { e.preventDefault(); }
 
+    const user = JSON.parse(window.localStorage.getItem('user'))
+
+    if (!user) {
+      return
+    }
+
     this.setState({inTimeout:true})
-    
+
     const data = this.state.data
 
-    let form_data = new FormData()
+    const formData = new FormData()
+    formData.append('post_data', JSON.stringify(this.state.data))
 
-    form_data.append('post_data', JSON.stringify(this.state.data))
+    if (this.state.imageFile) {
+      formData.append('image', this.state.imageFile)
+    }
 
-    if (this.state.imageFile)
-      form_data.append('image', this.state.imageFile)
-
-    console.log(form_data.get('image'))
-    console.log(form_data.get('data'))
 
     var config = {
       headers:
       {
-        //FIXME: pls put token here
-        'Authorization': 'test' 
+        'Authorization': user.token
       }
     };
 
-    axios.post(`http://127.0.0.1:5000/posts.json`, form_data, config)
+    axios.post(`http://127.0.0.1:5000/posts.json`, formData, config)
       .then(res => {
         const errCode = res.data['error']['code'];
 

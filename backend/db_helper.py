@@ -22,3 +22,19 @@ class Post(declarative_base()):
         self.description = description
         self.body = body
         self.created_at = created_at
+
+
+class User(declarative_base()):
+    __tablename__ = 'users'
+    __table_args__ = {'sqlite_autoincrement': True}
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String, nullable=False, unique=True)
+    password_encrypted = Column(String, nullable=False)
+    token = Column(String, nullable=False, unique=True)
+
+    def __init__(self, email, name, password_encrypted, token):
+        self.email = email
+        self.name = name
+        self.password_encrypted = password_encrypted
+        self.token = token

@@ -3,6 +3,9 @@ import Typography from 'material-ui/Typography';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
+import axios from 'axios';
+
+import { browserHistory } from 'react-router'
 
 export default class SignIn extends Component {
 
@@ -31,7 +34,23 @@ export default class SignIn extends Component {
 
     const data = this.state.data
 
-    console.log(data)
+    const formData = new FormData()
+
+    formData.append('email', data.email)
+    formData.append('password', data.password)
+
+    axios.post(`http://127.0.0.1:5000/signin.json`, formData).then(res => {
+      const data = res.data['result'];
+      window.localStorage.setItem('user', JSON.stringify(data))
+      browserHistory.push(`/`)
+    }).catch(err => {
+      if (err.message === 'Network Error' || err.status === 500) {
+        alert('Ошибка на сервере')
+      } else {
+        alert('Некорректный пароль или email')
+      }
+    });
+
   }
 
   render() {

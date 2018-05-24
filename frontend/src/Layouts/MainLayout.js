@@ -7,6 +7,8 @@ import {Link} from 'react-router';
 
 class MainLayout extends Component {
   render() {
+    const user = JSON.parse(window.localStorage.getItem('user'))
+
     return (
       <div>
         <AppBar position="static">
@@ -21,27 +23,41 @@ class MainLayout extends Component {
                 </Typography>
               </Button>
             <div style={styles.flex} />
-            <Button
-              color="inherit"
-              component={Link}
-              to="/posts/new"
-            >
-              Новая запись
-            </Button>
-            <Button
-              color="inherit"
-              component={Link}
-              to="/signin"
-            >
-              Вход
-            </Button>
-            <Button
-              color="inherit"
-              component={Link}
-              to="/signup"
-            >
-              Регистрация
-            </Button>
+            { user ? (
+                <div>
+                  <Button
+                    color="inherit"
+                    component={Link}
+                    to="/posts/new"
+                  >
+                    Новая запись
+                  </Button>
+                  <Button
+                    color="inherit"
+                    component={Link}
+                    to="/signout"
+                  >
+                    Выход
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    color="inherit"
+                    component={Link}
+                    to="/signin"
+                  >
+                    Вход
+                  </Button>
+                  <Button
+                    color="inherit"
+                    component={Link}
+                    to="/signup"
+                  >
+                    Регистрация
+                  </Button>
+                </div>
+              ) }
           </Toolbar>
         </AppBar>
         <main>

@@ -17,8 +17,7 @@ export default class PostEdit extends Component {
 
     this.state = {
       default: false,
-      post_id: 0,
-      author_id: '',
+      post_id: null,
       data: {
         title: '',
         description: '',
@@ -26,6 +25,11 @@ export default class PostEdit extends Component {
       },
       image: '',
       imageFile: null,
+    }
+
+    const user = JSON.parse(window.localStorage.getItem('user'))
+    if (!user) {
+      browserHistory.push('/')
     }
 
     //this.state = {
@@ -62,7 +66,6 @@ export default class PostEdit extends Component {
         this.setState({
           default: false,
           post_id: postId,
-          author_id: post_data.author_id,
           data: {
             title: post_data.title,
             description: post_data.description,
@@ -91,17 +94,16 @@ export default class PostEdit extends Component {
 
     form_data.append('post_data', JSON.stringify(this.state.data))
 
-    if (this.state.imageFile)
+    if (this.state.imageFile) {
       form_data.append('image', this.state.imageFile)
+    }
 
-    console.log(form_data.get('image'))
-    console.log(form_data.get('data'))
+    const user = JSON.parse(window.localStorage.getItem('user'))
 
     var config = {
       headers:
         {
-          //FIXME: pls put token here
-          'Authorization': 'test'
+          'Authorization': user.token
         }
     };
 
@@ -124,13 +126,12 @@ export default class PostEdit extends Component {
       });
   }
 
-  delete_post() {
-
+  deletePost() {
+    const user = JSON.parse(window.localStorage.getItem('user'))
     var config = {
       headers:
         {
-          //FIXME: pls put token here
-          'Authorization': 'test'
+          'Authorization': user.token
         }
     };
 
@@ -304,7 +305,7 @@ export default class PostEdit extends Component {
               <Button type='submit' disabled={this.state.inTimeout} variant="raised" color="primary" style={{ marginRight: 10 }}>
                 Отправить
               </Button>
-              <Button onClick={ () => { if(window.confirm('Действительно удалить пост?')) this.delete_post(); }} disabled={this.state.inTimeout} variant="raised" color="primary" style={{ backgroundColor: "#8B0000" }}>
+              <Button onClick={ () => { if(window.confirm('Действительно удалить пост?')) this.deletePost(); }} disabled={this.state.inTimeout} variant="raised" color="primary" style={{ backgroundColor: "#8B0000" }}>
                 Удалить
               </Button>
             </div>
